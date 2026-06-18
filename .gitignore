@@ -1,0 +1,12 @@
+20km2026/
+screenshots/
+screenshots_v2/
+raceresult_raw.json
+fetch_and_stats.py
+verify*.py
+*.pyc
+__pycache__/
+
+# SvelteKit
+.svelte-kit/
+node_modules/

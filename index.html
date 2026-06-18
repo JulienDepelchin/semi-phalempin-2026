@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course des 2 Stades Domitys · Mes Résultats</title>
+<style>
+/* ── Reset & tokens ────────────────────────────────────────────────────── */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:     #0a0a3f;
+  --bg2:    #0d0d4a;
+  --surf:   rgba(255,255,255,.06);
+  --surf2:  rgba(255,255,255,.11);
+  --bord:   rgba(255,255,255,.1);
+  --text:   #f0eeff;
+  --muted:  rgba(240,238,255,.5);
+  --green:  #298d80;
+  --green2: #1f6b61;
+  --yellow: #ffea11;
+  --teal:   #00e9b1;
+  --pink:   #e1135e;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+html{height:100%}
+body{
+  font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(circle at 12% 45%,rgba(41,141,128,.16) 0%,transparent 52%),
+    radial-gradient(circle at 90% 8%, rgba(0,233,177,.08) 0%,transparent 42%),
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:auto,auto,24px 24px,24px 24px;
+  color:var(--text);
+  min-height:945px;
+}
+
+/* ── Layout ────────────────────────────────────────────────────────────── */
+#app{max-width:900px;margin:0 auto;padding:0 1rem 2.5rem}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+header{
+  padding:1.2rem 0 .9rem;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;
+  border-bottom:1px solid var(--bord);
+  margin-bottom:1rem;
+}
+.h-left{}
+.race-title{
+  font-size:clamp(1.1rem,3.8vw,1.55rem);
+  font-weight:900;letter-spacing:-.025em;line-height:1.1;
+}
+.race-title .acc{color:var(--yellow)}
+.race-sub{font-size:.72rem;color:var(--muted);margin-top:.2rem;letter-spacing:.04em}
+.h-pills{display:flex;gap:.45rem;flex-shrink:0}
+.pill{
+  display:flex;align-items:center;gap:.3rem;
+  background:var(--surf);border:1px solid var(--bord);
+  border-radius:99px;padding:.22rem .65rem;
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;
+}
+.pdot{width:6px;height:6px;border-radius:50%}
+
+/* ── Tabs ──────────────────────────────────────────────────────────────── */
+.tabs{display:flex;gap:.5rem;margin-bottom:.9rem}
+.tab{
+  flex:1;padding:.6rem .5rem;
+  background:var(--surf);border:1px solid var(--bord);border-radius:10px;
+  color:var(--muted);font-size:.88rem;font-weight:800;
+  cursor:pointer;transition:all .15s;font-family:inherit;
+}
+.tab sub{display:block;font-size:.66rem;font-weight:500;opacity:.7;margin-top:.1rem}
+.tab.on{background:var(--green);border-color:var(--green);color:#fff}
+.tab:hover:not(.on){background:var(--surf2);color:var(--text)}
+
+/* ── Search ────────────────────────────────────────────────────────────── */
+.srch-row{display:flex;gap:.5rem;margin-bottom:.5rem}
+.ac-wrap{position:relative;flex:1}
+.srch-inp{
+  width:100%;padding:.72rem 1rem;
+  background:var(--surf);border:1px solid var(--bord);border-radius:10px;
+  color:var(--text);font-size:.93rem;font-family:inherit;outline:none;
+  transition:border-color .15s;
+}
+.srch-inp::placeholder{color:var(--muted)}
+.srch-inp:focus{border-color:var(--green)}
+.srch-btn{
+  padding:.72rem 1.2rem;
+  background:var(--green);border:1px solid var(--green);border-radius:10px;
+  color:#fff;font-size:.88rem;font-weight:800;font-family:inherit;
+  cursor:pointer;white-space:nowrap;transition:background .15s;
+  position:relative;z-index:300;
+}
+.srch-btn:hover{background:var(--green2)}
+.ac-list{
+  position:absolute;top:100%;left:0;right:0;
+  background:#10104d;border:1px solid var(--green);border-top:none;
+  border-radius:0 0 10px 10px;max-height:200px;overflow-y:auto;
+  z-index:200;display:none;
+}
+.ac-list.on{display:block}
+.ac-item{
+  padding:.52rem .9rem;font-size:.85rem;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:.5rem;
+}
+.ac-item:hover{background:rgba(41,141,128,.28)}
+.ac-bib{font-size:.74rem;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.srch-err{
+  margin-top:.45rem;padding:.42rem .85rem;
+  background:rgba(225,19,94,.12);border:1px solid rgba(225,19,94,.28);
+  border-radius:8px;font-size:.83rem;color:#ff6096;display:none;
+}
+
+/* ── Hero card ─────────────────────────────────────────────────────────── */
+.hero{
+  background:linear-gradient(135deg,rgba(41,141,128,.22) 0%,rgba(0,233,177,.07) 100%);
+  border:1px solid rgba(41,141,128,.32);border-radius:14px;
+  padding:.95rem 1.2rem;margin-bottom:.9rem;
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.bib{
+  background:var(--yellow);color:var(--bg);
+  width:58px;height:58px;border-radius:9px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex-shrink:0;line-height:1;
+}
+.bib .bl{font-size:.5rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.bib .bn{font-size:1.3rem;font-weight:900}
+.hinfo{flex:1;min-width:0}
+.hname{font-size:clamp(.95rem,3.5vw,1.3rem);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hmeta{font-size:.76rem;color:var(--muted);margin-top:.15rem}
+.htime-block{text-align:right}
+.htime{font-size:clamp(1.5rem,5vw,2.15rem);font-weight:900;font-variant-numeric:tabular-nums;color:var(--yellow);line-height:1}
+.hrace{font-size:.7rem;color:var(--muted);margin-top:.15rem}
+
+/* ── Chips ─────────────────────────────────────────────────────────────── */
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.6rem;margin-bottom:1rem}
+.chip{background:var(--surf);border:1px solid var(--bord);border-radius:10px;padding:.65rem .9rem}
+.chip.hl{border-color:rgba(255,234,17,.3);background:rgba(255,234,17,.06)}
+.chip .cl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.15rem}
+.chip .cv{font-size:1.4rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1}
+.chip.hl .cv{color:var(--yellow)}
+.chip .cs{font-size:.7rem;color:var(--muted);margin-top:.12rem}
+
+/* ── Histogram ─────────────────────────────────────────────────────────── */
+.hist-sec{margin-bottom:1rem}
+.hist-head{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem;
+  margin-bottom:.55rem;
+}
+.hist-ttl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.legend{display:flex;gap:.85rem;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:.3rem;font-size:.74rem;color:var(--muted)}
+.ldot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.hist-box{
+  background:rgba(0,0,20,.35);
+  border:1px solid var(--bord);border-radius:12px;overflow:hidden;
+}
+#hsvg{width:100%;display:block}
+
+/* ── Empty ─────────────────────────────────────────────────────────────── */
+.empty{text-align:center;padding:.8rem 1rem .4rem;font-size:.85rem;color:var(--muted)}
+
+/* ── Percentile ────────────────────────────────────────────────────────── */
+.pct-card{
+  background:var(--surf);border:1px solid var(--bord);border-radius:12px;
+  padding:1rem 1.2rem;margin-bottom:.9rem;
+}
+.pct-row{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.45rem}
+.pct-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.pct-num{font-size:1.9rem;font-weight:900;color:var(--yellow);line-height:1}
+.pct-txt{font-size:.86rem;margin-bottom:.7rem}
+.pct-track{height:9px;background:rgba(255,255,255,.1);border-radius:5px;overflow:hidden}
+.pct-fill{
+  height:100%;width:0;border-radius:5px;
+  background:linear-gradient(90deg,var(--green),var(--teal) 55%,var(--yellow));
+  transition:width .9s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── Comparison ────────────────────────────────────────────────────────── */
+.cmp-card{
+  background:var(--surf);border:1px solid var(--bord);border-radius:12px;
+  padding:1rem 1.2rem;margin-bottom:.9rem;
+}
+.cmp-ttl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.7rem}
+.cmp-row{display:flex;align-items:center;gap:.65rem;padding:.47rem 0;border-bottom:1px solid rgba(255,255,255,.055)}
+.cmp-row:last-child{border-bottom:none}
+.cmp-l{flex:1;font-size:.86rem;color:var(--muted)}
+.cmp-r{font-size:.87rem;font-weight:700;font-variant-numeric:tabular-nums;min-width:50px;text-align:right}
+.cmp-d{min-width:68px;text-align:right;font-size:.82rem;font-weight:700;font-variant-numeric:tabular-nums}
+.ahead{color:#00e9b1} .behind{color:#ff6096} .even{color:var(--muted)}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+footer{text-align:center;padding:1.25rem 0;font-size:.7rem;color:var(--muted);border-top:1px solid var(--bord)}
+
+/* ── Animations ────────────────────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fu{animation:fadeUp .32s ease}
+@keyframes svgIn{from{opacity:0}to{opacity:1}}
+.svg-in{animation:svgIn .4s ease}
+
+/* ── Mobile ────────────────────────────────────────────────────────────── */
+@media(max-width:520px){
+  .hero{flex-direction:column;gap:.75rem}
+  .htime-block{text-align:left}
+  .srch-row{flex-direction:column}
+  .h-pills{display:none}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── Header ── -->
+<header>
+  <div class="h-left">
+    <div class="race-title">Course des <span class="acc">2 Stades</span> Domitys</div>
+    <div class="race-sub">Villeneuve d'Ascq &middot; Avril 2026 &middot; Résultats personnalisés</div>
+  </div>
+  <div class="h-pills">
+    <div class="pill"><span class="pdot" style="background:var(--teal)"></span>Hommes</div>
+    <div class="pill"><span class="pdot" style="background:var(--pink)"></span>Femmes</div>
+  </div>
+</header>
+
+<!-- ── Tabs ── -->
+<div class="tabs">
+  <button class="tab on" data-r="10km" onclick="selectRace('10km',this)">
+    10 km <sub id="n10">—</sub>
+  </button>
+  <button class="tab" data-r="6km" onclick="selectRace('6km',this)">
+    6 km <sub id="n6">—</sub>
+  </button>
+</div>
+
+<!-- ── Search ── -->
+<div class="srch-row">
+  <div class="ac-wrap">
+    <input id="si" type="text" class="srch-inp"
+      placeholder="Dossard ou nom de famille…"
+      oninput="onInput(this.value)" onkeydown="onKey(event)"
+      autocomplete="off"/>
+    <div id="acl" class="ac-list"></div>
+  </div>
+  <button class="srch-btn" onpointerdown="closeAC()" onclick="doSearch()">Voir mes stats</button>
+</div>
+<div id="err" class="srch-err"></div>
+
+<!-- ── Hero (hidden) ── -->
+<div id="hero" class="hero fu" style="display:none">
+  <div class="bib"><span class="bl">N°</span><span class="bn" id="hbib">—</span></div>
+  <div class="hinfo">
+    <div class="hname" id="hname">—</div>
+    <div class="hmeta" id="hmeta">—</div>
+  </div>
+  <div class="htime-block">
+    <div class="htime" id="htime">—</div>
+    <div class="hrace" id="hrace">—</div>
+  </div>
+</div>
+
+<!-- ── Chips ── -->
+<div id="chips" class="chips"></div>
+
+<!-- ── Histogram (always visible) ── -->
+<div class="hist-sec">
+  <div class="hist-head">
+    <span class="hist-ttl">Distribution des temps</span>
+    <div class="legend">
+      <div class="leg"><div class="ldot" style="background:var(--teal)"></div>Hommes</div>
+      <div class="leg"><div class="ldot" style="background:var(--pink)"></div>Femmes</div>
+      <div class="leg" id="leg-user" style="display:none"><div class="ldot" style="background:var(--yellow)"></div>Toi</div>
+    </div>
+  </div>
+  <div class="hist-box">
+    <svg id="hsvg" viewBox="0 0 920 270"></svg>
+  </div>
+</div>
+
+<!-- ── Empty hint ── -->
+<p id="empty" class="empty">Entre ton dossard ou ton nom pour voir ta position dans la course</p>
+
+<!-- ── Percentile (hidden) ── -->
+<div id="pct" class="pct-card fu" style="display:none">
+  <div class="pct-row">
+    <span class="pct-lbl">Ta position parmi tous les finishers</span>
+    <span class="pct-num" id="pnum">—</span>
+  </div>
+  <p class="pct-txt" id="ptxt">—</p>
+  <div class="pct-track"><div class="pct-fill" id="pfill"></div></div>
+</div>
+
+<!-- ── Comparison (hidden) ── -->
+<div id="cmp" class="cmp-card fu" style="display:none">
+  <div class="cmp-ttl">Comparaison avec les références</div>
+  <div class="cmp-row">
+    <div class="cmp-l">Médiane générale</div>
+    <div class="cmp-r" id="cm0">—</div><div class="cmp-d" id="cd0">—</div>
+  </div>
+  <div class="cmp-row">
+    <div class="cmp-l" id="cgl">Médiane genre</div>
+    <div class="cmp-r" id="cm1">—</div><div class="cmp-d" id="cd1">—</div>
+  </div>
+  <div class="cmp-row">
+    <div class="cmp-l">Top 10 %</div>
+    <div class="cmp-r" id="cm2">—</div><div class="cmp-d" id="cd2">—</div>
+  </div>
+  <div class="cmp-row">
+    <div class="cmp-l">Top 25 %</div>
+    <div class="cmp-r" id="cm3">—</div><div class="cmp-d" id="cd3">—</div>
+  </div>
+</div>
+
+<footer>Course des 2 Stades Domitys &middot; Villeneuve d'Ascq &middot; Données&nbsp;: RaceResult</footer>
+</div><!-- /app -->
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let D = null;   // stats.json
+let RACE = '10km';
+let RNR  = null; // current runner
+
+// ── Palette ───────────────────────────────────────────────────────────────
+const C_MEN   = '#00e9b1';
+const C_WOMEN = '#e1135e';
+const C_USER  = '#ffea11';
+const C_BG    = '#0a0a3f';
+const FONT    = 'system-ui,sans-serif';
+
+// ── Time helpers ──────────────────────────────────────────────────────────
+const z = n => String(n).padStart(2,'0');
+
+function fmtT(s) {
+  s = Math.round(s);
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sc = s%60;
+  return h ? `${h}:${z(m)}:${z(sc)}` : `${m}:${z(sc)}`;
+}
+function fmtShort(s) {
+  const h = Math.floor(s/3600), m = Math.floor((s%3600)/60);
+  return h ? `${h}h${z(m)}` : `${m}'`;
+}
+function fmtPace(s, km) {
+  const p = Math.round(s/km);
+  return `${Math.floor(p/60)}:${z(p%60)}`;
+}
+function fmtName(n) {
+  if (!n.includes(',')) return n;
+  const [l,f] = n.split(',').map(s=>s.trim());
+  return `${f} ${l}`;
+}
+function dStr(d) {
+  const s = d<0?'−':'+', a = Math.abs(d);
+  return `${s}${Math.floor(a/60)}:${z(a%60)}`;
+}
+function ord(n) { return n===1?'1er':`${n}e`; }
+
+// ── Stats helpers ─────────────────────────────────────────────────────────
+function genderRank(curve, t) {
+  const {size,times} = curve;
+  if (!times||!times.length) return {rank:1,size:0};
+  let lo=0,hi=times.length;
+  while(lo<hi){const mid=(lo+hi)>>1;times[mid]<t?lo=mid+1:hi=mid}
+  return {rank:Math.min(Math.round(lo/times.length*size)+1,size),size};
+}
+function fasterPct(pos,total){ return Math.round((total-pos)/total*100); }
+
+// ── Data load ─────────────────────────────────────────────────────────────
+(async()=>{
+  try{
+    const r = await fetch('stats.json');
+    if(!r.ok) throw 0;
+    D = await r.json();
+    // Tab labels
+    ['10km','6km'].forEach(k=>{
+      const el = document.getElementById(k==='10km'?'n10':'n6');
+      if(el&&D[k]) el.textContent = `${D[k].global.n.toLocaleString('fr-FR')} finishers`;
+    });
+    drawHist(null);
+    showGlobalChips();
+  }catch(e){
+    document.getElementById('empty').textContent =
+      'Impossible de charger stats.json — servez la page via HTTP (pas file://).';
+  }
+})();
+
+// ── Race selector ──────────────────────────────────────────────────────────
+function selectRace(r,btn){
+  RACE=r; RNR=null;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('si').value='';
+  closeAC(); hideErr();
+  document.getElementById('hero').style.display='none';
+  document.getElementById('pct').style.display='none';
+  document.getElementById('cmp').style.display='none';
+  document.getElementById('empty').style.display='';
+  document.getElementById('leg-user').style.display='none';
+  showGlobalChips();
+  drawHist(null);
+}
+
+// ── Chips ──────────────────────────────────────────────────────────────────
+function showGlobalChips(){
+  if(!D||!D[RACE]) return;
+  const g=D[RACE].global, gM=D[RACE].byGender.M, gF=D[RACE].byGender.F;
+  setChips([
+    {l:'Finishers',   v:g.n.toLocaleString('fr-FR'),  s:RACE},
+    {l:'Médiane',     v:fmtT(g.medianTime),            s:'temps officiel'},
+    {l:'Médiane <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+C_MEN+';vertical-align:middle"></span>',
+                      v:fmtT(gM.medianTime),           s:`${gM.n.toLocaleString('fr-FR')} hommes`},
+    {l:'Médiane <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+C_WOMEN+';vertical-align:middle"></span>',
+                      v:fmtT(gF.medianTime),           s:`${gF.n.toLocaleString('fr-FR')} femmes`},
+  ]);
+}
+function showRunnerChips(rnr,race){
+  const km  = RACE==='10km'?10:6;
+  const {rank:rG,size:sG} = genderRank(race.genderRankCurve[rnr.genre],rnr.temps_sec);
+  const pct = fasterPct(rnr.pos,race.global.n);
+  setChips([
+    {l:'Classement général', v:ord(rnr.pos),     s:`/ ${race.global.n.toLocaleString('fr-FR')}`},
+    {l:`Classement ${rnr.genre==='F'?'femmes':'hommes'}`, v:ord(rG), s:`/ ${sG.toLocaleString('fr-FR')}`},
+    {l:'Allure',             v:fmtPace(rnr.temps_sec,km), s:'min / km'},
+    {l:'Mieux que',          v:`${pct} %`,        s:'des finishers', hl:true},
+  ]);
+}
+function setChips(items){
+  document.getElementById('chips').innerHTML = items.map(it=>
+    `<div class="chip${it.hl?' hl':''}">
+       <div class="cl">${it.l}</div>
+       <div class="cv">${it.v}</div>
+       <div class="cs">${it.s}</div>
+     </div>`
+  ).join('');
+}
+
+// ── Autocomplete ───────────────────────────────────────────────────────────
+function onInput(v){
+  hideErr();
+  const q=v.trim().toLowerCase();
+  if(!D||q.length<2){closeAC();return;}
+  const isNum=/^\d+$/.test(q);
+  const hits=D[RACE].runners.filter(r=>
+    isNum?r.dossard.startsWith(q):r.nom.toLowerCase().includes(q)
+  ).slice(0,8);
+  if(!hits.length){closeAC();return;}
+  const list=document.getElementById('acl');
+  list.innerHTML=hits.map(r=>
+    `<div class="ac-item" onclick="pick('${r.dossard}')">
+       <span>${fmtName(r.nom)}</span>
+       <span class="ac-bib">N°${r.dossard} &middot; ${r.temps_str}</span>
+     </div>`
+  ).join('');
+  list.classList.add('on');
+}
+function pick(d){
+  document.getElementById('si').value=d;
+  closeAC(); doSearch();
+}
+function closeAC(){ document.getElementById('acl').classList.remove('on'); }
+function onKey(e){ e.key==='Enter'&&doSearch(); e.key==='Escape'&&closeAC(); }
+document.addEventListener('click',e=>{if(!e.target.closest('.ac-wrap'))closeAC();});
+
+// ── Search ─────────────────────────────────────────────────────────────────
+function doSearch(){
+  hideErr(); closeAC();
+  if(!D){showErr('Données non chargées.');return;}
+  const v=document.getElementById('si').value.trim();
+  if(!v){showErr('Entre ton dossard ou ton nom.');return;}
+  const race=D[RACE];
+  const isNum=/^\d+$/.test(v);
+  let rnr;
+  if(isNum){
+    rnr=race.runners.find(r=>r.dossard===v);
+    if(!rnr){showErr(`Dossard N°${v} introuvable en ${RACE}.`);return;}
+  } else {
+    const q=v.toLowerCase();
+    const hits=race.runners.filter(r=>r.nom.toLowerCase().includes(q));
+    if(!hits.length){showErr(`Aucun coureur trouvé pour "${v}".`);return;}
+    if(hits.length>1){
+      const list=document.getElementById('acl');
+      list.innerHTML=hits.slice(0,10).map(r=>
+        `<div class="ac-item" onclick="pick('${r.dossard}')">
+           <span>${fmtName(r.nom)}</span>
+           <span class="ac-bib">N°${r.dossard} &middot; ${r.temps_str}</span>
+         </div>`
+      ).join('');
+      list.classList.add('on');
+      showErr(`${hits.length} résultats — clique sur le bon coureur.`);
+      return;
+    }
+    rnr=hits[0];
+  }
+  RNR=rnr;
+  render(rnr,race);
+}
+function showErr(m){const e=document.getElementById('err');e.textContent=m;e.style.display='block';}
+function hideErr(){document.getElementById('err').style.display='none';}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+function render(rnr,race){
+  const t=rnr.temps_sec;
+
+  // Hero
+  document.getElementById('hbib').textContent  = rnr.dossard;
+  document.getElementById('hname').textContent = fmtName(rnr.nom);
+  const meta=[rnr.annee?`Né·e ${rnr.annee}`:'',rnr.club].filter(Boolean).join(' · ');
+  document.getElementById('hmeta').textContent = meta;
+  document.getElementById('htime').textContent = fmtT(t);
+  document.getElementById('hrace').textContent = `${RACE} · ${rnr.genre==='F'?'Femme':'Homme'}`;
+  anim('hero','flex');
+
+  // Chips
+  showRunnerChips(rnr,race);
+
+  // Histogram
+  document.getElementById('empty').style.display='none';
+  document.getElementById('leg-user').style.display='';
+  drawHist(rnr);
+
+  // Percentile
+  const pct=fasterPct(rnr.pos,race.global.n);
+  document.getElementById('pnum').textContent=`${pct} %`;
+  document.getElementById('ptxt').textContent=
+    `Tu as devancé ${(race.global.n-rnr.pos).toLocaleString('fr-FR')} coureur·euses sur `+
+    `${(race.global.n-1).toLocaleString('fr-FR')} — mieux que ${pct} % des finishers.`;
+  anim('pct','block');
+  setTimeout(()=>{document.getElementById('pfill').style.width=pct+'%';},80);
+
+  // Comparison
+  const g=race.global, gG=race.byGender[rnr.genre];
+  setCmp(0,'Médiane générale',g.medianTime,t);
+  document.getElementById('cgl').textContent=`Médiane ${rnr.genre==='F'?'femmes':'hommes'}`;
+  setCmp(1,'',gG.medianTime,t);
+  setCmp(2,'',g.p10,t);
+  setCmp(3,'',g.p25,t);
+  anim('cmp','block');
+
+  document.getElementById('hero').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function anim(id,display){
+  const el=document.getElementById(id);
+  el.style.display=display;
+  el.classList.remove('fu'); void el.offsetWidth; el.classList.add('fu');
+}
+
+function setCmp(i,_,ref,myT){
+  document.getElementById(`cm${i}`).textContent=fmtT(ref);
+  const d=myT-ref, el=document.getElementById(`cd${i}`);
+  el.textContent=dStr(d);
+  el.className='cmp-d '+(d<-10?'ahead':d>10?'behind':'even');
+}
+
+// ── Histogram SVG ──────────────────────────────────────────────────────────
+function drawHist(rnr){
+  if(!D||!D[RACE]) return;
+  const {finishHist:h} = D[RACE];
+  const {domain:[lo,hi],binSec,men,women,menMedian,womenMedian} = h;
+  const bins=men.length;
+
+  // Geometry
+  const W=920,H=270;
+  const P={t:32,r:14,b:44,l:14};
+  const iW=W-P.l-P.r, iH=H-P.t-P.b;
+  const bW=iW/bins;
+  const yMax=Math.max(...men,...women)*1.1||1;
+
+  const sx = t => ((t-lo)/(hi-lo))*iW;
+  const bh = c => (c/yMax)*iH;
+
+  let out=[];
+
+  // Men bars
+  men.forEach((c,i)=>{
+    if(!c) return;
+    const x=(i*bW).toFixed(2), h=bh(c).toFixed(2), y=(iH-bh(c)).toFixed(2);
+    const w=Math.max(.8,bW-.7).toFixed(2);
+    out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${C_MEN}" opacity="0.52" rx="1.5"/>`);
+  });
+
+  // Women bars (on top, partially transparent)
+  women.forEach((c,i)=>{
+    if(!c) return;
+    const x=(i*bW).toFixed(2), h=bh(c).toFixed(2), y=(iH-bh(c)).toFixed(2);
+    const w=Math.max(.8,bW-.7).toFixed(2);
+    out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${C_WOMEN}" opacity="0.62" rx="1.5"/>`);
+  });
+
+  // Baseline
+  out.push(`<line x1="0" y1="${iH}" x2="${iW}" y2="${iH}" stroke="rgba(255,255,255,.12)" stroke-width="1"/>`);
+
+  // X-axis ticks every 5 min
+  const tSec=300, t0=Math.ceil(lo/tSec)*tSec;
+  for(let t=t0;t<=hi;t+=tSec){
+    const tx=sx(t).toFixed(2);
+    out.push(`<line x1="${tx}" y1="${iH}" x2="${tx}" y2="${iH+5}" stroke="rgba(255,255,255,.18)" stroke-width="1"/>`);
+    out.push(`<text x="${tx}" y="${iH+16}" fill="rgba(255,255,255,.38)" font-size="11" font-family="${FONT}" text-anchor="middle">${fmtShort(t)}</text>`);
+  }
+
+  // Gender median lines
+  function medLine(t,color,yLabel){
+    if(t===null||t===undefined||t<lo||t>hi) return '';
+    const x=sx(t).toFixed(2);
+    const side = (+x > iW*0.7) ? -1 : 1; // flip label if near right edge
+    const lx = side===1 ? (+x+4).toFixed(1) : (+x-4).toFixed(1);
+    const anchor = side===1 ? 'start' : 'end';
+    return `<line x1="${x}" y1="0" x2="${x}" y2="${iH}" stroke="${color}" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.72"/>
+    <text x="${lx}" y="${yLabel}" fill="${color}" font-size="11" font-family="${FONT}" font-weight="600" text-anchor="${anchor}">${fmtT(t)}</text>`;
+  }
+  // Men median higher (smaller y = nearer top), women below
+  out.push(medLine(menMedian,C_MEN,12));
+  out.push(medLine(womenMedian,C_WOMEN,25));
+
+  // User line
+  if(rnr){
+    const ux=Math.max(24,Math.min(iW-24,sx(rnr.temps_sec)));
+    const uxs=ux.toFixed(2);
+    out.push(`<line x1="${uxs}" y1="-8" x2="${uxs}" y2="${iH+8}" stroke="${C_USER}" stroke-width="2.5"/>`);
+    out.push(`<rect x="${(ux-24).toFixed(1)}" y="${(iH+10).toFixed(1)}" width="48" height="19" rx="4" fill="${C_USER}"/>`);
+    out.push(`<text x="${uxs}" y="${(iH+23).toFixed(1)}" fill="${C_BG}" font-size="10" font-family="${FONT}" font-weight="900" text-anchor="middle">TOI</text>`);
+  }
+
+  const svg=document.getElementById('hsvg');
+  svg.innerHTML=`<g transform="translate(${P.l},${P.t})">${out.join('')}</g>`;
+  svg.classList.remove('svg-in'); void svg.offsetWidth; svg.classList.add('svg-in');
+}
+</script>
+</body>
+</html>

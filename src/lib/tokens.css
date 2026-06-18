@@ -1,0 +1,43 @@
+:root {
+	--bg:     #0d0d1a;
+	--bg-2:   #131325;
+	--bg-3:   #1a1a2e;
+	--line:   #2a2a3f;
+	--line-2: #3a3a55;
+
+	--ink:    #f0eee8;
+	--ink-2:  #c0bdb4;
+	--ink-3:  #7a7870;
+	--ink-4:  #4a4845;
+
+	--hot:     #00eabd;
+	--hot-dim: rgba(0, 234, 189, 0.18);
+
+	--men-color:   #00eabd;
+	--women-color: #e1135e;
+
+	--font-display: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+	--font-ui:      'Barlow', system-ui, sans-serif;
+	--font-mono:    ui-monospace, 'Cascadia Code', monospace;
+
+	--slide-pad: clamp(24px, 5vw, 80px);
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	height: 100%;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: var(--font-ui);
+	-webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+	outline: 2px solid var(--hot);
+	outline-offset: 3px;
+}
