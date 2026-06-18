@@ -6,9 +6,5 @@ __pycache__/
 node_modules/
 build/
 
-# Données générées localement (regénérer avec : python scripts/build_stats.py <pdf>)
-stats.json
-static/stats.json
-
 # PDF source (trop lourd pour git, garder en local)
 *.pdf
