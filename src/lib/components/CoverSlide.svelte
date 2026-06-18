@@ -141,7 +141,7 @@
 	:global(.logo-wrap svg) {
 		width: 100%;
 		height: auto;
-		max-height: 96px;
+		max-height: 72px;
 	}
 
 	h1 {
