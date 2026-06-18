@@ -1,6 +1,6 @@
 import { base } from '$app/paths';
 
-export type Race = '10km' | '6km';
+export type Race = '21km';
 
 export interface Runner {
 	dossard: string;

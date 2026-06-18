@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { loadStats, type Runner, type Race, type RaceStats, type StatsJson } from '$lib/data.ts';
+	import { loadStats, type Runner, type RaceStats, type StatsJson } from '$lib/data.ts';
 	import WrappedPips from '$lib/components/WrappedPips.svelte';
 	import CoverSlide from '$lib/components/CoverSlide.svelte';
 	import TempsSlide from '$lib/components/TempsSlide.svelte';
@@ -12,35 +12,32 @@
 	import PartageSlide from '$lib/components/PartageSlide.svelte';
 
 	const TOTAL_SLIDES = 8; // 0-7
-	const DIST: Record<Race, number> = { '10km': 10, '6km': 6 };
+	const RACE = '21km' as const;
+	const DIST_KM = 21.1;
 
 	let stats = $state<StatsJson | null>(null);
 	let runner = $state<Runner | null>(null);
-	let race = $state<Race>('10km');
 	let activeSlide = $state(0);
 	let scrollEl = $state<HTMLElement | null>(null);
 
-	const raceStats = $derived<RaceStats | null>(stats ? stats[race] : null);
+	const raceStats = $derived<RaceStats | null>(stats ? stats[RACE] : null);
 
 	onMount(async () => {
 		stats = await loadStats();
 
 		const params = new URLSearchParams(window.location.search);
 		const dossard = params.get('dossard');
-		const epreuve = params.get('epreuve') as Race | null;
-		if (dossard && epreuve && stats[epreuve]) {
-			const found = stats[epreuve].runners.find((r) => r.dossard === dossard);
+		if (dossard && stats[RACE]) {
+			const found = stats[RACE].runners.find((r) => r.dossard === dossard);
 			if (found) {
-				race = epreuve;
 				runner = found;
 				setTimeout(() => gotoSlide(1), 120);
 			}
 		}
-
 	});
 
 	$effect(() => {
-		void runner; // re-run when runner changes so newly created slides are observed
+		void runner;
 		if (!scrollEl) return;
 		const slides = scrollEl.querySelectorAll('[data-slide]');
 		const observer = new IntersectionObserver(
@@ -64,9 +61,8 @@
 		scrollEl?.querySelector(`[data-slide="${idx}"]`)?.scrollIntoView({ behavior: 'smooth' });
 	}
 
-	function handleSelect(r: Runner, selectedRace: Race) {
+	function handleSelect(r: Runner) {
 		runner = r;
-		race = selectedRace;
 		setTimeout(() => gotoSlide(1), 50);
 	}
 
@@ -99,8 +95,7 @@
 	<div data-slide="0" class="slide-wrapper">
 		{#if stats}
 			<CoverSlide
-				runners10={stats['10km'].runners}
-				runners6={stats['6km'].runners}
+				runners={stats[RACE].runners}
 				onselect={handleSelect}
 			/>
 		{:else}
@@ -115,7 +110,7 @@
 		{#key runner.dossard}
 			<!-- Slide 1: Temps -->
 			<div data-slide="1" class="slide-wrapper">
-				<TempsSlide {runner} stats={raceStats} {race} />
+				<TempsSlide {runner} stats={raceStats} race={RACE} />
 			</div>
 
 			<!-- Slide 2: Rang -->
@@ -140,7 +135,7 @@
 
 			<!-- Slide 6: Allure -->
 			<div data-slide="6" class="slide-wrapper">
-				<AllureSlide {runner} stats={raceStats} {race} distKm={DIST[race]} />
+				<AllureSlide {runner} stats={raceStats} race={RACE} distKm={DIST_KM} />
 			</div>
 
 			<!-- Slide 7: Partage -->
@@ -148,8 +143,8 @@
 				<PartageSlide
 					{runner}
 					stats={raceStats}
-					{race}
-					distKm={DIST[race]}
+					race={RACE}
+					distKm={DIST_KM}
 					onrestart={handleRestart}
 				/>
 			</div>

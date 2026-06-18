@@ -1,20 +1,17 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
-	import { search, formatName, type Runner, type Race } from '$lib/data.ts';
+	import { search, formatName, type Runner } from '$lib/data.ts';
 
 	const {
-		runners10,
-		runners6,
+		runners,
 		onselect
 	}: {
-		runners10: Runner[];
-		runners6: Runner[];
-		onselect: (runner: Runner, race: Race) => void;
+		runners: Runner[];
+		onselect: (runner: Runner) => void;
 	} = $props();
 
 	let query = $state('');
-	let race = $state<Race>('10km');
 	let suggestions = $state<Runner[]>([]);
 	let showSugg = $state(false);
 	let error = $state('');
@@ -34,15 +31,11 @@
 		} catch {}
 	});
 
-	function runners() {
-		return race === '10km' ? runners10 : runners6;
-	}
-
 	function onInput() {
 		error = '';
 		const q = query.trim();
 		if (q.length >= 2) {
-			suggestions = search(runners(), q).slice(0, 8);
+			suggestions = search(runners, q).slice(0, 8);
 			showSugg = suggestions.length > 0 && isNaN(Number(q));
 		} else {
 			suggestions = [];
@@ -54,21 +47,21 @@
 		showSugg = false;
 		const q = query.trim();
 		if (!q) return;
-		const results = search(runners(), q);
+		const results = search(runners, q);
 		if (results.length === 1) {
 			pick(results[0]);
 		} else if (results.length > 1) {
 			suggestions = results.slice(0, 8);
 			showSugg = true;
 		} else {
-			error = `"${q}" introuvable dans le ${race}.`;
+			error = `"${q}" introuvable dans le classement.`;
 		}
 	}
 
 	function pick(r: Runner) {
 		showSugg = false;
 		query = formatName(r.nom);
-		onselect(r, race);
+		onselect(r);
 	}
 
 	function onKeydown(e: KeyboardEvent) {
@@ -84,12 +77,7 @@
 
 	<h1>Le récap de<br />votre course.</h1>
 
-	<div class="race-tabs" role="tablist">
-		<button role="tab" aria-selected={race === '10km'} class:on={race === '10km'}
-			onclick={() => { race = '10km'; query = ''; suggestions = []; error = ''; }}>10 km</button>
-		<button role="tab" aria-selected={race === '6km'} class:on={race === '6km'}
-			onclick={() => { race = '6km'; query = ''; suggestions = []; error = ''; }}>6 km</button>
-	</div>
+	<p class="race-label">Semi-Marathon de Phalempin 2025</p>
 
 	<div class="search-wrap" bind:this={searchWrapEl}>
 		<div class="field-row">
@@ -127,7 +115,7 @@
 		{/if}
 	</div>
 
-	<p class="privacy">Données issues des résultats officiels de la Course des 2 Stades Domitys 2026. Aucune donnée personnelle n'est stockée. Conformément à l'article 18 du règlement de la course, vous pouvez demander la non-publication de vos résultats en contactant l'organisation.</p>
+	<p class="privacy">Données issues des résultats officiels du Semi-Marathon de Phalempin 2025. Aucune donnée personnelle n'est stockée.</p>
 </div>
 
 <style>
@@ -165,29 +153,12 @@
 		color: var(--ink);
 	}
 
-	.race-tabs {
-		display: flex;
-		gap: 8px;
-		background: var(--bg-2);
-		border-radius: 100px;
-		padding: 4px;
-	}
-
-	.race-tabs button {
-		padding: 8px 24px;
-		border-radius: 100px;
-		border: none;
-		background: transparent;
-		color: var(--ink-3);
-		font: inherit;
+	.race-label {
+		font-size: 0.85rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--hot);
 		font-weight: 600;
-		cursor: pointer;
-		transition: background 0.2s, color 0.2s;
-	}
-
-	.race-tabs button.on {
-		background: var(--hot);
-		color: var(--bg);
 	}
 
 	.search-wrap {

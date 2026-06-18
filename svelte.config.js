@@ -15,7 +15,7 @@ const config = {
 			strict: false
 		}),
 		prerender: { entries: ['*'], handleHttpError: 'warn' },
-		paths: { base: process.env.BASE_PATH ?? '/course-2-stades-2026' }
+		paths: { base: process.env.BASE_PATH ?? '/semi-phalempin-2026' }
 	}
 };
 

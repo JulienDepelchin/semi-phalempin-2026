@@ -1,12 +1,14 @@
-20km2026/
-screenshots/
-screenshots_v2/
-raceresult_raw.json
-fetch_and_stats.py
-verify*.py
 *.pyc
 __pycache__/
 
 # SvelteKit
 .svelte-kit/
 node_modules/
+build/
+
+# Données générées localement (regénérer avec : python scripts/build_stats.py <pdf>)
+stats.json
+static/stats.json
+
+# PDF source (trop lourd pour git, garder en local)
+*.pdf

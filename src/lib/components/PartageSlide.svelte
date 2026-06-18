@@ -41,12 +41,12 @@
 
 	const shareUrl = $derived(
 		typeof window !== 'undefined'
-			? `${window.location.origin}${base}/?dossard=${runner.dossard}&epreuve=${race}`
+			? `${window.location.origin}${base}/?dossard=${runner.dossard}`
 			: ''
 	);
 
 	const shareText = $derived(
-		`J'ai couru le ${race} de la Course des 2 Stades en ${runner.temps_str} ! Devant ${pct}% des coureurs.`
+		`J'ai couru le Semi-Marathon de Phalempin en ${runner.temps_str} ! Devant ${pct}% des coureurs.`
 	);
 
 	let copied = $state(false);
@@ -303,7 +303,7 @@
 		ctx.font = '600 28px "Barlow"';
 		ctx.fillStyle = 'rgba(255,255,255,0.38)';
 		(ctx as any).letterSpacing = '6px';
-		ctx.fillText('COURSE DES 2 STADES DOMITYS 2026', W / 2, 207);
+		ctx.fillText('SEMI-MARATHON DE PHALEMPIN 2025', W / 2, 207);
 		(ctx as any).letterSpacing = '0px';
 		ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
 		ctx.beginPath(); ctx.moveTo(80, 245); ctx.lineTo(W - 80, 245); ctx.stroke();
@@ -394,7 +394,7 @@
 			const blob = await new Promise<Blob>((resolve, reject) => {
 				canvas.toBlob(b => b ? resolve(b) : reject(new Error('toBlob failed')), 'image/png');
 			});
-			const file = new File([blob], 'story-course-2-stades.png', { type: 'image/png' });
+			const file = new File([blob], 'story-phalempin-2025.png', { type: 'image/png' });
 
 			const canShareFiles =
 				typeof navigator.share === 'function' &&
@@ -406,7 +406,7 @@
 			} else {
 				const url = URL.createObjectURL(blob);
 				const a = document.createElement('a');
-				a.href = url; a.download = 'story-course-2-stades.png'; a.click();
+				a.href = url; a.download = 'story-phalempin-2025.png'; a.click();
 				setTimeout(() => URL.revokeObjectURL(url), 5000);
 				storyToast = "Image téléchargée ! Ouvrez Instagram → + → Story → sélectionnez l'image.";
 				setTimeout(() => { storyToast = ''; }, 7000);
@@ -542,7 +542,7 @@
 			Chercher un autre coureur
 		</button>
 
-		<p class="legal">Données issues des résultats officiels de la Course des 2 Stades Domitys 2026. Aucune donnée personnelle n'est stockée.</p>
+		<p class="legal">Données issues des résultats officiels du Semi-Marathon de Phalempin 2025. Aucune donnée personnelle n'est stockée.</p>
 	</div>
 </SlideShell>
 
