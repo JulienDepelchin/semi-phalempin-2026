@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <!-- Sprite of 4 male running poses, 20×40 viewBox each -->
+  <symbol id="rh0" viewBox="0 0 20 40" overflow="visible">
+    <circle cx="10" cy="4" r="3.5" fill="currentColor"/>
+    <path d="M10 7 L8 17 L6 32 H10 L12 21 L15 31 H19 L14 17 L12 7Z" fill="currentColor"/>
+    <path d="M9 11 L3 15 L4 17 L10 13Z" fill="currentColor"/>
+    <path d="M11 10 L17 7 L16 5 L10 8Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="rh1" viewBox="0 0 20 40" overflow="visible">
+    <circle cx="10" cy="4" r="3.5" fill="currentColor"/>
+    <path d="M10 7 L9 17 L5 31 H9 L11 21 L14 30 H18 L13 17 L12 7Z" fill="currentColor"/>
+    <path d="M9 11 L2 14 L3 16 L10 13Z" fill="currentColor"/>
+    <path d="M11 11 L17 14 L16 16 L10 12Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="rh2" viewBox="0 0 20 40" overflow="visible">
+    <circle cx="11" cy="4" r="3.5" fill="currentColor"/>
+    <path d="M11 7 L9 16 L7 31 H11 L13 21 L16 29 H20 L15 16 L13 7Z" fill="currentColor"/>
+    <path d="M10 10 L3 8 L2 10 L10 12Z" fill="currentColor"/>
+    <path d="M12 9 L18 12 L17 14 L11 11Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="rh3" viewBox="0 0 20 40" overflow="visible">
+    <circle cx="10" cy="4" r="3.5" fill="currentColor"/>
+    <path d="M10 7 L8 17 L7 32 H11 L12 21 L15 31 H19 L14 17 L12 7Z" fill="currentColor"/>
+    <path d="M9 10 L4 5 L3 7 L9 12Z" fill="currentColor"/>
+    <path d="M11 9 L17 5 L16 3 L10 7Z" fill="currentColor"/>
+  </symbol>
+</svg>
