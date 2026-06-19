@@ -404,9 +404,6 @@
 		(ctx as any).letterSpacing = '4px';
 		ctx.fillText("C'EST VOTRE COURSE. PARTAGEZ-LA FIÈREMENT.", W / 2, fY + 95, W - 120);
 		(ctx as any).letterSpacing = '0px';
-		ctx.font = '400 24px "Barlow"'; ctx.fillStyle = 'rgba(255,255,255,0.18)';
-		ctx.fillText(shareUrl, W / 2, fY + 155, W - 120);
-
 		// Logo watermark bas-droite — SVG inline en blob URL pour éviter CORS/sécurité canvas.
 		await new Promise<void>(resolve => {
 			const blob = new Blob([LOGO_SVG], { type: 'image/svg+xml' });
