@@ -383,6 +383,15 @@
 		ctx.font = '400 24px "Barlow"'; ctx.fillStyle = 'rgba(255,255,255,0.18)';
 		ctx.fillText(shareUrl, W / 2, fY + 155, W - 120);
 
+		// Logo watermark bas-droite
+		if (logoImg) {
+			const w = 120;
+			const h = (logoImg.naturalHeight / logoImg.naturalWidth) * w;
+			ctx.globalAlpha = 0.9;
+			ctx.drawImage(logoImg, W - w - 16, H - h - 16, w, h);
+			ctx.globalAlpha = 1;
+		}
+
 		return canvas;
 	}
 
