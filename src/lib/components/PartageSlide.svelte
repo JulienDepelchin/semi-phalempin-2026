@@ -383,14 +383,21 @@
 		ctx.font = '400 24px "Barlow"'; ctx.fillStyle = 'rgba(255,255,255,0.18)';
 		ctx.fillText(shareUrl, W / 2, fY + 155, W - 120);
 
-		// Logo watermark bas-droite
-		if (logoImg) {
-			const w = 120;
-			const h = (logoImg.naturalHeight / logoImg.naturalWidth) * w;
-			ctx.globalAlpha = 0.9;
-			ctx.drawImage(logoImg, W - w - 16, H - h - 16, w, h);
-			ctx.globalAlpha = 1;
-		}
+		// Logo watermark bas-droite — chargement isolé pour garantir que
+		// drawImage s'exécute dans le callback onload, pas avant.
+		await new Promise<void>(resolve => {
+			const img = new Image();
+			img.onload = () => {
+				const w = 120;
+				const h = (img.naturalHeight / img.naturalWidth) * w;
+				ctx.globalAlpha = 0.9;
+				ctx.drawImage(img, W - w - 16, H - h - 16, w, h);
+				ctx.globalAlpha = 1;
+				resolve();
+			};
+			img.onerror = () => resolve();
+			img.src = `${base}/logo.svg`;
+		});
 
 		return canvas;
 	}
