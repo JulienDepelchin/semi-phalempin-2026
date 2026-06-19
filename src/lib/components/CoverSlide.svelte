@@ -77,7 +77,7 @@
 
 	<h1>Le récap de<br />votre course.</h1>
 
-	<p class="race-label">Semi-Marathon de Phalempin 2025</p>
+	<p class="race-label">Semi-Marathon de Phalempin 2026</p>
 
 	<div class="search-wrap" bind:this={searchWrapEl}>
 		<div class="field-row">
@@ -115,7 +115,7 @@
 		{/if}
 	</div>
 
-	<p class="privacy">Données issues des résultats officiels du Semi-Marathon de Phalempin 2025. Aucune donnée personnelle n'est stockée.</p>
+	<p class="privacy">Données issues des résultats officiels du Semi-Marathon de Phalempin 2026. Aucune donnée personnelle n'est stockée.</p>
 </div>
 
 <style>
