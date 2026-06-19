@@ -52,6 +52,7 @@
 	let copied = $state(false);
 	let storyLoading = $state(false);
 	let storyToast = $state('');
+	let previewUrl = $state('');
 
 	// ── Photo state ───────────────────────────────────────────────────────────
 	let photoDataUrl = $state<string | null>(null);
@@ -424,6 +425,7 @@
 			img.src = url;
 		});
 
+		previewUrl = canvas.toDataURL('image/png');
 		return canvas;
 	}
 
@@ -555,7 +557,11 @@
 
 			<!-- Live preview -->
 			<div class="preview-wrap">
-				<canvas bind:this={previewCanvasEl} class="preview-canvas" aria-label="Aperçu Story"></canvas>
+				{#if previewUrl}
+					<img src={previewUrl} class="preview-canvas" style="width:200px;height:356px;object-fit:contain" alt="Aperçu Story" />
+				{:else}
+					<canvas bind:this={previewCanvasEl} class="preview-canvas" aria-label="Aperçu Story"></canvas>
+				{/if}
 				<span class="preview-label">Aperçu Story</span>
 			</div>
 
