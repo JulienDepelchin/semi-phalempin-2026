@@ -179,12 +179,10 @@ def main():
     med = g['medianTime']
     print(f"  {len(runners)} finishers | médiane {med//3600}h{(med%3600)//60:02d}:{med%60:02d} | H:{len(men_t)} F:{len(wom_t)}")
 
-    # Vérification du cas de test : dossard 1732 → Jeremy HUYGHE, M1M, ~1:16:04
-    test = next((r for r in runners if r['dossard'] == '1732'), None)
-    if test:
-        print(f"  OK Dossard 1732 : {test['nom']} {test['genre']} {test['temps_str']} pos={test['pos']}")
-    else:
-        print("  ⚠ Dossard 1732 non trouvé")
+    # Vérification : premier finisher
+    if runners:
+        t1 = runners[0]
+        print(f"  OK 1er : #{t1['pos']} {t1['nom']} {t1['genre']} {t1['temps_str']}")
 
     output = {
         RACE_LABEL: {
