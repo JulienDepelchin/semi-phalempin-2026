@@ -42,9 +42,9 @@
 	interface AgeGroupDef { label: string; sub: string; minYear: number; maxYear: number; }
 
 	const AGE_GROUPS: AgeGroupDef[] = [
-		{ label: '≃<20',   sub: '(JU)',     minYear: 2007, maxYear: 9999 },
-		{ label: '≃20-29', sub: '(SE)',     minYear: 1997, maxYear: 2006 },
-		{ label: '≃30-39', sub: '(M0)',     minYear: 1987, maxYear: 1996 },
+		{ label: '≃<22',   sub: '(JU-ES)', minYear: 2004, maxYear: 9999 },
+		{ label: '≃23-34', sub: '(SE)',    minYear: 1992, maxYear: 2003 },
+		{ label: '≃35-39', sub: '(M0)',    minYear: 1987, maxYear: 1991 },
 		{ label: '≃40-49', sub: '(M1-M2)', minYear: 1977, maxYear: 1986 },
 		{ label: '≃50-59', sub: '(M3-M4)', minYear: 1967, maxYear: 1976 },
 		{ label: '≃60-69', sub: '(M5-M6)', minYear: 1957, maxYear: 1966 },
