@@ -197,6 +197,7 @@
 	// ── Share buttons ────────────────────────────────────────────────────────
 
 	function shareX() {
+		(window as any).umami?.track('partage', { canal: 'x' });
 		window.open(
 			`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`,
 			'_blank', 'noopener'
@@ -204,6 +205,7 @@
 	}
 
 	function shareFacebook() {
+		(window as any).umami?.track('partage', { canal: 'facebook' });
 		window.open(
 			`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
 			'_blank', 'noopener'
@@ -211,6 +213,7 @@
 	}
 
 	function shareWhatsApp() {
+		(window as any).umami?.track('partage', { canal: 'whatsapp' });
 		window.open(
 			`https://wa.me/?text=${encodeURIComponent(`${shareText} Retrouvez mes stats 👉 ${shareUrl}`)}`,
 			'_blank', 'noopener'
@@ -218,6 +221,7 @@
 	}
 
 	async function copyLink() {
+		(window as any).umami?.track('partage', { canal: 'lien' });
 		try {
 			await navigator.clipboard.writeText(shareUrl);
 			copied = true;
@@ -429,6 +433,7 @@
 	async function shareStory() {
 		storyLoading = true;
 		storyToast = '';
+		(window as any).umami?.track('story_generee');
 		try {
 			const canvas = await generateStoryCanvas();
 			const blob = await new Promise<Blob>((resolve, reject) => {

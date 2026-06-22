@@ -61,6 +61,7 @@
 	function pick(r: Runner) {
 		showSugg = false;
 		query = formatName(r.nom);
+		(window as any).umami?.track('recherche_dossard', { dossard: r.dossard, genre: r.genre });
 		onselect(r);
 	}
 
