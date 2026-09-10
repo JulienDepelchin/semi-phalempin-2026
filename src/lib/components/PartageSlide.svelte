@@ -591,7 +591,7 @@
 			Chercher un autre coureur
 		</button>
 
-		<p class="legal">Données issues des résultats officiels du Semi-Marathon de Phalempin 2026. Aucune donnée personnelle n'est stockée.</p>
+		<p class="legal">Données issues des résultats officiels du Semi-Marathon de Phalempin 2026, publics. Tout est calculé dans votre navigateur&nbsp;: rien n'est enregistré sur un serveur.</p>
 	</div>
 </SlideShell>
 

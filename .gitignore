@@ -8,3 +8,6 @@ build/
 
 # PDF source (trop lourd pour git, garder en local)
 *.pdf
+
+# stats.json généré à la racine par build_stats.py ; la version servie est static/stats.json
+/stats.json
